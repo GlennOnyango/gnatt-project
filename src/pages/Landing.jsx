@@ -1,6 +1,6 @@
-import 'devextreme/dist/css/dx.light.css';
-import 'devexpress-gantt/dist/dx-gantt.min.css';
-import React, { useState } from 'react';
+import "devextreme/dist/css/dx.light.css";
+import "devexpress-gantt/dist/dx-gantt.min.css";
+import React, { useState } from "react";
 
 import Gantt, {
   Tasks,
@@ -12,19 +12,20 @@ import Gantt, {
   Toolbar,
   Item,
   Validation,
-} from 'devextreme-react/gantt';
+} from "devextreme-react/gantt";
 
+import { Box, FormControl, InputLabel, Select } from "@mui/material";
 import {
-  Box, FormControl, InputLabel, Select,
-} from '@mui/material';
-import {
-  tasks, dependencies, resources, resourceAssignments,
-} from '../data.js';
-import TaskTemplate from '../TaskTemplate.jsx';
-import TicketDialog from '../components/TicketDialog.jsx';
+  tasks,
+  dependencies,
+  resources,
+  resourceAssignments,
+} from "../data.js";
+import TaskTemplate from "../TaskTemplate.jsx";
+import TicketDialog from "../components/TicketDialog.jsx";
 
 export default function Landing() {
-  const [duration, setDuration] = useState('days');
+  const [duration, setDuration] = useState("days");
   const [enableEditing, setEnableEditing] = useState(true);
 
   const [open, setOpen] = useState(false);
@@ -36,20 +37,20 @@ export default function Landing() {
 
       <div
         style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'start',
-          padding: '1rem',
-          height: '100vh',
-          gap: '0.5em',
-          backgroundColor: 'bisque',
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "start",
+          padding: "1rem",
+          height: "100vh",
+          gap: "0.5em",
+          backgroundColor: "bisque",
         }}
       >
         <Box width="100%" display="flex" flexDirection="row" gap={2}>
           <FormControl
             variant="outlined"
-            style={{ backgroundColor: 'white', width: '19%' }}
+            style={{ backgroundColor: "white", width: "19%" }}
           >
             <InputLabel htmlFor="outlined-duration-native-simple">
               Duration
@@ -60,8 +61,8 @@ export default function Landing() {
               onChange={(data) => setDuration(data.target.value)}
               label="Duration"
               inputProps={{
-                name: 'duration',
-                id: 'outlined-duration-native-simple',
+                name: "duration",
+                id: "outlined-duration-native-simple",
               }}
             >
               <option value="auto">Auto</option>
@@ -76,7 +77,7 @@ export default function Landing() {
 
           <FormControl
             variant="outlined"
-            style={{ backgroundColor: 'white', width: '19%' }}
+            style={{ backgroundColor: "white", width: "19%" }}
           >
             <InputLabel htmlFor="outlined-duration-native-simple">
               Enable Editing
@@ -87,8 +88,8 @@ export default function Landing() {
               onChange={(data) => setEnableEditing(data.target.value)}
               label="Duration"
               inputProps={{
-                name: 'duration',
-                id: 'outlined-duration-native-simple',
+                name: "duration",
+                id: "outlined-duration-native-simple",
               }}
             >
               <option value={true}>Enabled</option>
@@ -100,17 +101,17 @@ export default function Landing() {
         <Gantt
           rootValue={0}
           style={{
-            width: '100%',
-            height: 'auto', // Allow height to expand
-            minHeight: '70vh',
-            maxHeight: '90vh', // Prevent excessive expansion
-            overflowY: 'auto',
+            width: "100%",
+            height: "auto", // Allow height to expand
+            minHeight: "70vh",
+            maxHeight: "90vh", // Prevent excessive expansion
+            overflowY: "auto",
           }}
           taskListWidth={500}
           scaleType={duration}
           taskContentRender={TaskTemplate}
           onTaskClick={(e) => {
-            console.log('Tickets event', e);
+            console.log("Tickets event", e);
 
             const taskId = e.data.id;
 
@@ -120,12 +121,34 @@ export default function Landing() {
 
             setOpen(true);
           }}
-        >
-          onTaskDblClick=
-          {(data) => {
+          onTaskDblClick={(data) => {
             data.event.preventDefault();
-            alert('This task was double-clicked', data);
+            alert("This task was double-clicked", data);
           }}
+          // onTaskInserting={async (e) => {
+          //   e.cancel = true; // Prevent task insertion by default
+          //   console.log("Checking database entry for task insertion", e);
+
+          //   // Simulate a database check (replace with actual API call or logic)
+          //   const isTaskAllowed = await checkDatabaseForTask(e.values);
+
+          //   if (isTaskAllowed) {
+          //     e.cancel = false; // Allow task insertion if check passes
+          //     console.log("Task insertion allowed");
+          //   } else {
+          //     console.log("Task insertion denied");
+          //     alert("Task cannot be inserted due to database restrictions.");
+          //   }
+
+          //   async function checkDatabaseForTask(taskData) {
+          //     // Replace this with actual database/API logic
+          //     // Example: return fetch('/api/check-task', { method: 'POST', body: JSON.stringify(taskData) }).then(res => res.json());
+          //     return new Promise((resolve) =>
+          //       setTimeout(() => resolve(true), 1000)
+          //     ); // Simulated check
+          //   }
+          // }}
+        >
           <Tasks dataSource={tasks} />
           <Dependencies dataSource={dependencies} />
           <Resources dataSource={resources} />
@@ -153,4 +176,3 @@ export default function Landing() {
     </React.Fragment>
   );
 }
-
